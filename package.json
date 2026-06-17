@@ -1,8 +1,8 @@
 {
-  "name": "dev-boiler",
-  "version": "2.0.0",
+  "name": "@pryv/boiler",
+  "version": "1.2.7",
   "private": true,
-  "description": "HDS fork of @pryv/boiler — logging + config boilerplate, with PHI/secret redaction via dev-newrelic-scrub baked into the logger.",
+  "description": "HDS fork of @pryv/boiler (repo: healthdatasafe/dev-boiler) — keeps the @pryv/boiler package name for drop-in install, adds PHI/secret redaction via dev-newrelic-scrub in the logger.",
   "keywords": [
     "HDS",
     "Config",
