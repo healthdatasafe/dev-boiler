@@ -1,31 +1,33 @@
 {
-  "name": "@pryv/boiler",
-  "version": "1.2.6",
-  "private": false,
-  "description": "Logging and config boilerplate library for Node.js apps and services at Pryv",
+  "name": "dev-boiler",
+  "version": "2.0.0",
+  "private": true,
+  "description": "HDS fork of @pryv/boiler — logging + config boilerplate, with PHI/secret redaction via dev-newrelic-scrub baked into the logger.",
   "keywords": [
-    "Pryv",
+    "HDS",
     "Config",
     "Logging"
   ],
-  "homepage": "https://github.com/pryv/pryv-boiler#readme",
+  "homepage": "https://github.com/healthdatasafe/dev-boiler#readme",
   "bugs": {
-    "url": "https://github.com/pryv/pryv-boiler/issues"
+    "url": "https://github.com/healthdatasafe/dev-boiler/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pryv/pryv-boiler.git"
+    "url": "git+https://github.com/healthdatasafe/dev-boiler.git"
   },
   "license": "BSD-3-Clause",
-  "author": "Pryv S.A <info@pryv.com> (https://pryv.com)",
+  "author": "Pryv S.A <info@pryv.com> (https://pryv.com), fork maintained by HealthDataSafe",
   "main": "src/index",
   "types": "src/index.d.ts",
   "scripts": {
     "license": "source-licenser -c .licenser.yml .",
-    "lint": "semistandard"
+    "lint": "semistandard",
+    "test": "node --test 'test/*.test.js'"
   },
   "dependencies": {
     "debug": "^4.3.4",
+    "dev-newrelic-scrub": "github:healthdatasafe/dev-newrelic-scrub",
     "js-yaml": "^4.1.0",
     "nconf": "^0.12.0",
     "winston": "^3.9.0",

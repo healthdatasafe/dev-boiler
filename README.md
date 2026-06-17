@@ -1,5 +1,13 @@
-# Pryv config and logging boilerplate for Node.js
+# dev-boiler — HDS config and logging boilerplate for Node.js
 
+> HDS fork of [`@pryv/boiler`](https://github.com/pryv/pryv-boiler) (unmaintained upstream).
+> Drop-in replacement: same `init` / `getConfig` / `getLogger` API. The one behavioural
+> change is **PHI/secret redaction**: every log message and context is scrubbed by
+> [`dev-newrelic-scrub`](https://github.com/healthdatasafe/dev-newrelic-scrub) inside
+> `Logger.log`, *before* it reaches any transport (file, console, or custom forward sink).
+> This replaces upstream's weak `hideSensitiveValues` (which only masked `auth=c…` tokens
+> and three password keys, and crashed on circular references). Origin: HIPAA monitoring /
+> subprocessor posture.
 
 ## Usage
 

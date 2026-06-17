@@ -6,6 +6,7 @@ const util = require('util');
 const winston = require('winston');
 require('winston-daily-rotate-file');
 const debugModule = require('debug');
+const { redact, redactString } = require('dev-newrelic-scrub');
 let winstonInstance = null;
 let rootLogger = null;
 let customLoggerInstance = null;
@@ -199,13 +200,16 @@ class Logger {
 
   log () {
     const level = arguments[0];
-    const message = hideSensitiveValues(arguments[1]);
+    const rawMessage = arguments[1];
+    const message = typeof rawMessage === 'string' ? redactString(rawMessage) : redact(rawMessage);
     const context = [];
 
     let meta;
-    // Security measure: We do not want any sensitive value to appear in logs
+    // Security measure: no PHI / secret may reach any transport (file, console,
+    // forward sink). Redaction happens here, before globalLog fans out. See
+    // dev-newrelic-scrub (origin: HIPAA monitoring / subprocessor posture).
     for (let i = 2; i < arguments.length; i++) {
-      context.push(inspectAndHide(arguments[i]));
+      context.push(arguments[i] === undefined ? undefined : redact(arguments[i]));
     }
     if (context.length === 1) {
       meta = { context: context[0] };
@@ -257,51 +261,3 @@ module.exports = {
   setGlobalName,
   initLoggerWithConfig
 };
-
-// ----------------- Hide sensite data -------------------- //
-
-function inspectAndHide (o) {
-  if (typeof o === 'undefined') return o;
-  if (o instanceof Error) return o;
-  return _inspectAndHide(JSON.parse(JSON.stringify(o))); // clone and remove circular
-}
-
-function _inspectAndHide (o) {
-  if (typeof o === 'string') {
-    return hideSensitiveValues(o);
-  }
-  if (o !== null && typeof o === 'object') {
-    if (Array.isArray(o)) {
-      const res = [];
-      for (const item of o) {
-        res.push(inspectAndHide(item));
-      }
-      return res;
-    }
-
-    const res = {};
-    for (const key of Object.keys(o)) {
-      if (['password', 'passwordHash', 'newPassword'].includes(key)) {
-        res[key] = '(hidden password)';
-      } else {
-        res[key] = inspectAndHide(o[key]);
-      }
-    }
-    return res;
-  }
-  return o;
-}
-
-// Hides sensitive values (auth tokens and passwords) in log messages
-function hideSensitiveValues (msg) {
-  if (typeof msg !== 'string') return msg;
-  const tokenRegexp = /auth\=c([a-z0-9-]*)/g;
-  const passwordRegexp = /"(password|passwordHash|newPassword)"[:=]"([^"]*)"/g;
-  const mask = '(hidden)';
-
-  const res = msg
-    .replace(tokenRegexp, 'auth=' + mask)
-    .replace(passwordRegexp, '$1=' + mask);
-
-  return res;
-}
