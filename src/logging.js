@@ -33,9 +33,7 @@ function generateFormat (options) {
   }
 
   function printf (info) {
-    const {
-      timestamp, level, message, ...args
-    } = info;
+    const { timestamp, level, message } = info;
 
     let items = info[Symbol.for('splat')] || {};
 
