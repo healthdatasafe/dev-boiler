@@ -3,7 +3,7 @@
  * [BSD-3-Clause](https://github.com/pryv/pryv-boiler/blob/master/LICENSE)
  */
 
-// ----- Exported Types (for ESM: import type { Config, Logger } from '@pryv/boiler') -----
+// ----- Exported Types (for ESM: import type { Config, Logger } from 'dev-boiler') -----
 
 export interface InitOptions {
   /** The name of the application, used by Logger and debug */
@@ -218,7 +218,7 @@ export function getConfig(): Promise<Config>;
 export function getConfigUnsafe(warnOnly?: boolean): Config;
 export function init(options: InitOptions, fullyLoadedCallback?: (config: Config) => void): Boiler;
 
-// ----- Default Export (for: import boiler from '@pryv/boiler') -----
+// ----- Default Export (for: import boiler from 'dev-boiler') -----
 
 declare const boiler: Boiler;
 export default boiler;

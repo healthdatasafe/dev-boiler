@@ -17,7 +17,7 @@
 The "boiler" must be initialized with the application name and configuration files settings, before invoking `getConfig()` or `getLogger()`:
 
 ```js
-require('@pryv/boiler').init({
+require('dev-boiler').init({
   appName: 'my-app', // This will will be prefixed to any log messages
   baseFilesDir: path.resolve(__dirname, '..'), // use for file:// relative path if not give cwd() will be used
   baseConfigDir: path.resolve(__dirname, '../config'),
@@ -67,11 +67,11 @@ Retrieving the configuration object:
 
 ```javascript
 // synchronous loading
-const { getConfigUnsafe } = require('@pryv/boiler'); // Until all asynchronous sources such as URL are loaded, items might not be available
+const { getConfigUnsafe } = require('dev-boiler'); // Until all asynchronous sources such as URL are loaded, items might not be available
 const config = await getConfigUnsafe();
 
 // asynchronous loading
-const { getConfig } = require('@pryv/boiler');
+const { getConfig } = require('dev-boiler');
 const config = await getConfig(); // Here we can be sure all items are fully loaded
 ```
 
@@ -134,7 +134,7 @@ All messages are prefixed by the `appName` value provided at initialization (see
 #### Using the logger
 
 ```javascript
-const {getLogger} = require('@pryv/boiler');
+const {getLogger} = require('dev-boiler');
 
 logger.info('Message', item); // standard log
 logger.warn('Message', item); // warning
