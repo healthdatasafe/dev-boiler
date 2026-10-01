@@ -3,7 +3,6 @@
  * [BSD-3-Clause](https://github.com/pryv/pryv-boiler/blob/master/LICENSE)
  */
 const path = require('path');
-const boiler = require('../src');
 const { getConfigUnsafe, getLogger, getConfig } = require('../src').init({
   appName: 'sample',
   baseFilesDir: path.resolve(__dirname, '../'),

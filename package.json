@@ -1,6 +1,6 @@
 {
   "name": "dev-boiler",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "private": true,
   "description": "HDS fork of @pryv/boiler (upstream: pryv/pryv-boiler). Published as `dev-boiler`, NOT under the upstream name: the fork adds PHI/secret redaction via dev-newrelic-scrub in the logger, and an identical import specifier made it impossible to tell at a call site which implementation was loaded.",
   "keywords": [

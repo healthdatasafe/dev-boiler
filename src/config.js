@@ -82,7 +82,7 @@ class Config {
     const logger = this.logger = logging.getLogger('config');
     const store = this.store = new nconf.Provider();
 
-    const baseConfigDir = this.baseConfigDir = options.baseConfigDir || process.cwd();
+    const baseConfigDir = this.baseConfigDir = options.baseConfigDir || process.cwd();
     logger.debug('Init with baseConfigDir: ' + baseConfigDir);
 
     // 0. memory at top
@@ -134,7 +134,7 @@ class Config {
           logger.debug('Loaded [' + extra.scope + '] from DATA: ' + (extra.key ? ' under [' + extra.key + ']' : ''));
           continue;
         }
-        if (extra.url || extra.urlFromKey || extra.fileAsync) {
+        if (extra.url || extra.urlFromKey || extra.fileAsync) {
           // register scope in the chain to keep order of configs
           store.use(extra.scope, { type: 'literal', store: {} });
           logger.debug('Booked [' + extra.scope + '] for async Loading ');
@@ -169,7 +169,7 @@ class Config {
           store.use(scope, { type: 'literal', store: conf });
         } else { // JSON or YAML
           const options = { file: filePath };
-          if (filePath.endsWith('.yml') || filePath.endsWith('.yaml')) { options.format = nconf.formats.yaml; }
+          if (filePath.endsWith('.yml') || filePath.endsWith('.yaml')) { options.format = nconf.formats.yaml; }
           store.file(scope, options);
         }
 
@@ -187,7 +187,7 @@ class Config {
     const baseFilesDir = this.baseFilesDir;
 
     async function loadUrl (scope, key, url) {
-      if (typeof url === 'undefined' || url === null) {
+      if (typeof url === 'undefined' || url === null) {
         logger.warn('Null or Undefined Url for [' + scope + ']');
         return;
       }
@@ -377,9 +377,9 @@ function getLearnFilename (appName, learnDirectory) {
 
 function learn (learnDirectoryAndFilename, key) {
   if (learnDirectoryAndFilename) {
-    const caller_line = (new Error()).stack.split('\n')[3]; // get callee name and line
-    const index = caller_line.indexOf('at ');
-    const str = key + ';' + caller_line.slice(index + 3, caller_line.length) + '\n';
+    const callerLine = (new Error()).stack.split('\n')[3]; // get callee name and line
+    const index = callerLine.indexOf('at ');
+    const str = key + ';' + callerLine.slice(index + 3, callerLine.length) + '\n';
     fs.appendFileSync(learnDirectoryAndFilename + '-calls.csv', str);
   }
 }

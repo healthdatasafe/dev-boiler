@@ -126,10 +126,9 @@ async function initLoggerWithConfig (config) {
       winstonInstance.add(rotatedFiles);
     } else {
       const files = new winston.transports.File({
+        ...fileTransportSizeOptions(logFile),
         filename: logFile.path,
         level: logFile.level,
-        maxSize: logFile.maxFileBytes || '10m',
-        maxFiles: logFile.maxNbFiles || '14d',
         format: fileFormat
       });
       winstonInstance.add(files);
@@ -254,8 +253,32 @@ function getLogger (name) {
   return rootLogger.getLogger(name);
 }
 
+const SIZE_UNITS = { k: 1024, m: 1024 * 1024, g: 1024 * 1024 * 1024 };
+
+/**
+ * Size cap for the non-rotated file transport. winston's File transport only
+ * reads `maxsize` (lowercase, bytes) and a numeric `maxFiles`; anything else is
+ * silently ignored and the log grows without bound.
+ * `maxFileBytes` accepts a number of bytes or '<n>k|m|g'.
+ */
+function fileTransportSizeOptions (logFile) {
+  return {
+    maxsize: parseSize(logFile.maxFileBytes) || 10 * SIZE_UNITS.m,
+    maxFiles: parseInt(logFile.maxNbFiles, 10) || 14,
+    tailable: true
+  };
+}
+
+function parseSize (value) {
+  if (typeof value === 'number') return value;
+  const match = /^(\d+)\s*([kmg])?b?$/i.exec(String(value || '').trim());
+  if (!match) return null;
+  return parseInt(match[1], 10) * (SIZE_UNITS[(match[2] || '').toLowerCase()] || 1);
+}
+
 module.exports = {
   getLogger,
   setGlobalName,
-  initLoggerWithConfig
+  initLoggerWithConfig,
+  fileTransportSizeOptions
 };
