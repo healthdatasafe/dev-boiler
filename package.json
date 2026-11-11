@@ -36,5 +36,8 @@
   "devDependencies": {
     "semistandard": "^17.0.0",
     "source-licenser": "^2.0.5"
+  },
+  "allowScripts": {
+    "github:healthdatasafe/dev-newrelic-scrub": true
   }
 }
